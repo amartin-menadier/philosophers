@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/28 09:41:35 by celeloup          #+#    #+#              #
-#    Updated: 2020/12/01 20:53:39 by user42           ###   ########.fr        #
+#    Updated: 2020/12/04 20:12:51 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,14 +30,14 @@ _CUT		= "\033[k"
 NAME		= philo_one
 
 CC			= clang
-CFLAGS		= -lpthread -Wall -Wextra -Werror -g3 #-fsanitize=address,undefined 
+CFLAGS		= -lpthread -Wall -Wextra -Werror -g3 -fsanitize=address,undefined 
 DEPS		= philo_one.h
 
 SRCS		= philo_one.c ../utils_args.c ../utils_basic.c
 OBJS		= $(SRCS:.c=.o)
 
 #ARGS
-NUMBER_OF_PHILOSOPHERS					=     3 #philosophers
+NUMBER_OF_PHILOSOPHERS					=     7 #philosophers
 TIME_TO_DIE								= 15000 #ms to die
 TIME_TO_EAT								=  200 #ms to eat
 TIME_TO_SLEEP							=   5#ms to sleep
