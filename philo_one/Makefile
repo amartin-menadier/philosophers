@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/28 09:41:35 by celeloup          #+#    #+#              #
-#    Updated: 2020/12/04 20:12:51 by user42           ###   ########.fr        #
+#    Updated: 2020/12/07 16:30:22 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ CC			= clang
 CFLAGS		= -lpthread -Wall -Wextra -Werror -g3 -fsanitize=address,undefined 
 DEPS		= philo_one.h
 
-SRCS		= philo_one.c ../utils_args.c ../utils_basic.c
+SRCS		= philo_one.c state_functions.c free.c \
+				../utils_args_to_int.c ../utils_time_and_print.c
 OBJS		= $(SRCS:.c=.o)
 
 #ARGS

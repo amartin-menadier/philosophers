@@ -6,26 +6,17 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:22:20 by user42            #+#    #+#             */
-/*   Updated: 2020/12/04 21:57:28 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/07 15:26:21 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philosophers.h"
 
-size_t	get_time(void)
-{
-	struct timeval	start;
-
-	if (gettimeofday(&start, NULL) == -1)
-		return (get_time());
-	return ((start.tv_sec * 1000000) + start.tv_usec);
-}
-
 /*
 ** basic_atoi: only for positive values
 */
 
-size_t		basic_atoi(char *str)
+size_t	basic_atoi(char *str)
 {
 	int		i;
 	size_t	n;
@@ -44,7 +35,7 @@ size_t		basic_atoi(char *str)
 }
 
 /*
-** Checks the number of args, if they are digits-only and 'atoies' them
+** parse_args: Checks the nb of args, if they are digits-only and 'atoies' them
 */
 
 int		parse_args(t_args *arg, int argc, char **argv)
@@ -58,7 +49,8 @@ int		parse_args(t_args *arg, int argc, char **argv)
 		|| (arg->time_to_die = basic_atoi(argv[2])) < 0
 		|| (arg->time_to_eat = basic_atoi(argv[3])) < 0
 		|| (arg->time_to_sleep = basic_atoi(argv[4])) < 0
-		|| (argv[5] && (arg->times_philo_must_eat = basic_atoi(argv[5])) < 0))
+		|| (argv[5]
+		&& (arg->times_philo_must_eat = (int)basic_atoi(argv[5])) < 0))
 	{
 		write(1, "\nError: Invalid format of an argument", 38);
 		return (EXIT_FAILURE);
