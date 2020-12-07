@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_time.c                                       :+:      :+:    :+:   */
+/*   utils_time_and_print.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2020/12/07 16:17:31 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/07 18:46:40 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*get_msg(char *time, char *index, char *activity)
 }
 
 /*
-** print_activity: 
+** print_activity: prints the change of state of a philosopher
 */
 
 void	print_activity(size_t time, int index, char *activity)

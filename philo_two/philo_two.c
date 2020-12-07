@@ -1,60 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2020/12/07 17:18:01 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/07 19:23:52 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./philo_one.h"
+#include "./philo_two.h"
 
-int		recruit_philosophers(t_args *args, t_one **philo, size_t index)
-{
-	if (index != 1 && !((*philo) = (t_one *)malloc(sizeof(t_one))))
-		return (EXIT_FAILURE);
-	(*philo)->args = args;
-	(*philo)->index = index;
-	(*philo)->thread = -1;
-	(*philo)->time_of_death = 0;
-	(*philo)->right_fork = NULL;
-	(*philo)->eaten_meals = 0;
-	if (!((*philo)->left_fork = malloc(sizeof(pthread_mutex_t))))
-		return (EXIT_FAILURE);
-	pthread_mutex_init((*philo)->left_fork, NULL);
-	if (index == args->number_of_philosophers)
-		(*philo)->next = NULL;
-	else
-		return (recruit_philosophers(args, &(*philo)->next, index + 1));
-	return (EXIT_SUCCESS);
-}
-
-int		link_forks(t_one *philo, pthread_mutex_t *right_fork, int index)
-{
-	t_one	*last;
-
-	last = philo;
-	while (index == 1 && last && last->next)
-		last = last->next;
-	if (philo->args->number_of_philosophers == 1)
-	{
-		if (!(philo->right_fork = malloc(sizeof(pthread_mutex_t))))
-			return (EXIT_FAILURE);
-		pthread_mutex_init(philo->right_fork, NULL);
-	}
-	else if (index == 1)
-		philo->right_fork = last->left_fork;
-	else
-		philo->right_fork = right_fork;
-	if (philo->next)
-		return (link_forks(philo->next, philo->left_fork, index + 1));
-	return (EXIT_SUCCESS);
-}
-
-int		start_simulation(t_one *philo, t_args *args)
+int		start_simulation(t_two *philo, t_args *args)
 {
 	if (!philo)
 		return (EXIT_SUCCESS);
@@ -65,9 +23,9 @@ int		start_simulation(t_one *philo, t_args *args)
 	return (start_simulation(philo->next, args));
 }
 
-void	wait_till_the_end(t_one *philo, t_args *args, size_t start_time)
+void	wait_till_the_end(t_two *philo, t_args *args, size_t start_time)
 {
-	t_one	*first;
+	t_two	*first;
 	size_t	full_philosophers;
 
 	first = philo;
@@ -93,21 +51,44 @@ void	wait_till_the_end(t_one *philo, t_args *args, size_t start_time)
 	return ;
 }
 
+int		recruit_philosophers(t_args *args, t_two **philo,
+			sem_t *forks, size_t index)
+{
+	if (index != 1 && !((*philo) = (t_two *)malloc(sizeof(t_two))))
+		return (EXIT_FAILURE);
+	(*philo)->args = args;
+	(*philo)->forks = forks;
+	(*philo)->index = index;
+	(*philo)->thread = -1;
+	(*philo)->time_of_death = 0;
+	(*philo)->eaten_meals = 0;
+	if (index == args->number_of_philosophers)
+		(*philo)->next = NULL;
+	else
+		return (recruit_philosophers(args, &(*philo)->next, forks, index + 1));
+	return (EXIT_SUCCESS);
+}
+
 int		main(int argc, char **argv)
 {
 	t_args			*args;
-	t_one			*philo;
+	t_two			*philo;
+	sem_t			*forks;
 
 	args = NULL;
 	philo = NULL;
-	write(1, "\n\nSTARTING PHILO_ONE SIMULATION\n\n", 34);
+	forks = NULL;
+	write(1, "\n\nSTARTING PHILO_TWO SIMULATION\n\n", 34);
 	if (!(args = malloc(sizeof(t_args)))
-		|| !(philo = malloc(sizeof(t_one)))
-		|| parse_args(args, argc, argv)
-		|| recruit_philosophers(args, &philo, 1)
-		|| link_forks(philo, NULL, 1)
+		|| !(philo = malloc(sizeof(t_two)))
+		|| parse_args(args, argc, argv))
+		return (free_philosophers(&args, &philo, &forks, EXIT_FAILURE));
+	sem_unlink("/forks");
+	forks = sem_open("/forks", O_CREAT, 0660, args->number_of_philosophers);
+	if (forks == SEM_FAILED
+		|| recruit_philosophers(args, &philo, forks, 1)
 		|| start_simulation(philo, args))
-		return (free_philosophers(&args, &philo, EXIT_FAILURE));
+		return (free_philosophers(&args, &philo, &forks, EXIT_FAILURE));
 	wait_till_the_end(philo, args, args->start_time);
-	return (free_philosophers(&args, &philo, EXIT_SUCCESS));
+	return (free_philosophers(&args, &philo, &forks, EXIT_SUCCESS));
 }

@@ -6,49 +6,49 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2020/12/07 18:45:50 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/07 18:42:40 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./philo_one.h"
+#include "./philo_two.h"
 
-int		take_fork(t_one *philo, int index)
+int		take_fork(t_two *philo, int index)
 {
 	if (philo->args->times_philo_must_eat < -1
 		|| philo->eaten_meals == philo->args->times_philo_must_eat
 		|| philo->time_of_death < get_time())
 		return (EXIT_FAILURE);
-	pthread_mutex_lock(philo->left_fork);
+	sem_wait(philo->forks);
 	if (philo->args->times_philo_must_eat >= -1
 		&& philo->time_of_death > get_time())
 		print_activity(get_time() - philo->args->start_time, index, FORK);
 	else
 	{
-		pthread_mutex_unlock(philo->left_fork);
+		sem_post(philo->forks);
 		return (EXIT_FAILURE);
 	}
-	pthread_mutex_lock(philo->right_fork);
+	sem_wait(philo->forks);
 	if (philo->args->times_philo_must_eat >= -1
 		&& philo->time_of_death > get_time())
 		print_activity(get_time() - philo->args->start_time, index, FORK);
 	else
 	{
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
+		sem_post(philo->forks);
+		sem_post(philo->forks);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
 
-int		eat(t_one *philo, t_args *args, int index)
+int		eat(t_two *philo, t_args *args, int index)
 {
 	size_t	time_to_eat_and_die;
 
 	if (philo->args->times_philo_must_eat < -1
 		|| philo->eaten_meals == philo->args->times_philo_must_eat)
 	{
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
+		sem_post(philo->forks);
+		sem_post(philo->forks);
 		return (EXIT_FAILURE);
 	}
 	time_to_eat_and_die = (args->time_to_eat + args->time_to_die) * 1000;
@@ -56,8 +56,8 @@ int		eat(t_one *philo, t_args *args, int index)
 	if (philo->time_of_death > get_time())
 		print_activity(get_time() - args->start_time, index, EAT);
 	usleep(1000 * args->time_to_eat);
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	sem_post(philo->forks);
+	sem_post(philo->forks);
 	if (philo->eaten_meals >= 0)
 		philo->eaten_meals++;
 	if (philo->eaten_meals == philo->args->times_philo_must_eat)
@@ -65,7 +65,7 @@ int		eat(t_one *philo, t_args *args, int index)
 	return (EXIT_SUCCESS);
 }
 
-int		sleep_tight(t_one *philo, int index)
+int		sleep_tight(t_two *philo, int index)
 {
 	if (philo->args->times_philo_must_eat < -1
 		|| philo->eaten_meals == philo->args->times_philo_must_eat)
@@ -76,7 +76,7 @@ int		sleep_tight(t_one *philo, int index)
 	return (EXIT_SUCCESS);
 }
 
-int		think(t_one *philo, int index)
+int		think(t_two *philo, int index)
 {
 	if (philo->args->times_philo_must_eat < -1
 		|| philo->eaten_meals == philo->args->times_philo_must_eat
@@ -89,9 +89,9 @@ int		think(t_one *philo, int index)
 
 void	*being_a_philosopher(void *arg)
 {
-	t_one *philo;
+	t_two *philo;
 
-	philo = (t_one *)arg;
+	philo = (t_two *)arg;
 	while (philo->args->times_philo_must_eat >= -1
 		&& philo->eaten_meals != philo->args->times_philo_must_eat)
 	{
