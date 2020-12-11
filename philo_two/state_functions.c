@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2020/12/07 18:42:40 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/11 12:50:25 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		eat(t_two *philo, t_args *args, int index)
 	philo->time_of_death = get_time() + time_to_eat_and_die;
 	if (philo->time_of_death > get_time())
 		print_activity(get_time() - args->start_time, index, EAT);
-	usleep(1000 * args->time_to_eat);
+	usleep(999 * args->time_to_eat);
 	sem_post(philo->forks);
 	sem_post(philo->forks);
 	if (philo->eaten_meals >= 0)
@@ -72,7 +72,7 @@ int		sleep_tight(t_two *philo, int index)
 		return (EXIT_FAILURE);
 	if (philo->time_of_death > get_time())
 		print_activity(get_time() - philo->args->start_time, index, SLEEP);
-	usleep(1000 * philo->args->time_to_sleep);
+	usleep(999 * philo->args->time_to_sleep);
 	return (EXIT_SUCCESS);
 }
 

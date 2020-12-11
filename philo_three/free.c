@@ -6,30 +6,29 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:17:07 by user42            #+#    #+#             */
-/*   Updated: 2020/12/11 13:14:06 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/10 14:50:51 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./philo_one.h"
+#include "./philo_three.h"
 
-int		free_philosophers(t_args **args, t_one *philo, int ret)
+int		free_philosophers(t_args **args, pid_t **pids, int ret)
 {
-	if (philo && philo->next)
-		free_philosophers(args, philo->next, ret);
-	if (philo && philo->thread)
+	int	i;
+
+	i = 0;
+	while ((*pids) && i < (*args)->number_of_philosophers)
 	{
-		pthread_detach(philo->thread);
-		philo->thread = 0;
+		kill((*pids)[i], SIGKILL);
+		i++;
 	}
-	if (philo && philo->left_fork)
-	{
-		pthread_mutex_destroy(philo->left_fork);
-		free(philo->left_fork);
-	}
-	if ((!philo || (philo && philo->index == 1)) && args && *args)
-		free(*args);
-	if (philo)
-		free(philo);
-	philo = NULL;
+	sem_close((*args)->forks);
+	sem_unlink("/forks");
+	sem_close((*args)->lock);
+	sem_unlink("/lock");
+	free(*args);
+	(*args) = NULL;
+	free(*pids);
+	*pids = NULL;
 	return (ret);
 }

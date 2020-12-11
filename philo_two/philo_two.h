@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2020/12/07 18:15:38 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/10 14:27:41 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct	s_two{
 }				t_two;
 
 void			*being_a_philosopher(void *arg);
-int				free_philosophers(t_args **args, t_two **philo,
+int				free_philosophers(t_args **args, t_two *philo,
 					sem_t **forks, int ret);
 
 #endif

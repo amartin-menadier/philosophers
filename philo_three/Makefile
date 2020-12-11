@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/28 09:41:35 by celeloup          #+#    #+#              #
-#    Updated: 2020/12/11 13:07:03 by user42           ###   ########.fr        #
+#    Updated: 2020/12/09 13:25:15 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,15 +26,15 @@ _SHOW_CURS	= "\033[?25h"
 _UP			= "\033[A"
 _CUT		= "\033[k"
 
-#PHILO_ONE
-NAME		= philo_one
+#PHILO_THREE
+NAME		= philo_three
 
 CC			= clang
 CFLAGS		= -lpthread -Wall -Wextra -Werror -g3 -fsanitize=address,undefined 
-DEPS		= philo_one.h
+DEPS		= philo_three.h
 
-SRCS		= philo_one.c state_functions.c free.c \
-				../utils_args_to_int.c ../utils_time_and_print.c
+SRCS		= philo_three.c state_functions.c free.c \
+				utils_args_to_int.c utils_time_and_print.c
 OBJS		= $(SRCS:.c=.o)
 
 #ARGS

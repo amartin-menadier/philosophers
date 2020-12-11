@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/28 09:41:35 by celeloup          #+#    #+#              #
-#    Updated: 2020/12/07 16:52:36 by user42           ###   ########.fr        #
+#    Updated: 2020/12/08 12:37:45 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,13 +49,7 @@ all:$(NAME)
 
 $(NAME): $(SRCS) $(DEPS)
 	$(CC) $(SRCS) -o $(NAME) $(CFLAGS) 
-	
-#$(OBJS): $(SRCS) $(DEPS)
-#	$(CC) $(CFLAGS)	-c $< 
-	
-#$(LIB): $(SRCS) ./philo_two.h
-#	ar rcs $(LIB) $(OBJS)
-	
+
 clean:
 	rm -rf $(OBJS)
 
