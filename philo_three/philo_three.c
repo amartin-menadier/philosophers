@@ -6,11 +6,32 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2020/12/11 13:48:22 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/11 14:35:27 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo_three.h"
+
+int		free_philosophers(t_args **args, pid_t **pids, int ret)
+{
+	int	i;
+
+	i = 0;
+	while ((*pids) && i < (*args)->number_of_philosophers)
+	{
+		kill((*pids)[i], SIGKILL);
+		i++;
+	}
+	sem_close((*args)->forks);
+	sem_unlink("/forks");
+	sem_close((*args)->lock);
+	sem_unlink("/lock");
+	free(*args);
+	(*args) = NULL;
+	free(*pids);
+	*pids = NULL;
+	return (ret);
+}
 
 /*
 ** start_simulation (= philosopher process main function) returns the
@@ -27,6 +48,7 @@ int		start_simulation(t_args *args, size_t index)
 	philo.index = index;
 	philo.time_of_death = args->start_time + args->time_to_die;
 	pthread_create(&(philo.thread), NULL, being_a_philosopher, &philo);
+	usleep(1000);
 	while (philo.time_of_death > get_time()
 		&& (args->times_must_eat >= -1
 		&& philo.eaten_meals != args->times_must_eat))
@@ -34,7 +56,8 @@ int		start_simulation(t_args *args, size_t index)
 	pthread_detach(philo.thread);
 	if (philo.eaten_meals == args->times_must_eat)
 		exit(0);
-	print_activity(get_time() - args->start_time, index, DIE, args->lock);
+	print_activity(philo.time_of_death - args->start_time,
+		index, DIE, args->lock);
 	exit(index);
 }
 

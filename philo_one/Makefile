@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/28 09:41:35 by celeloup          #+#    #+#              #
-#    Updated: 2020/12/11 13:07:03 by user42           ###   ########.fr        #
+#    Updated: 2020/12/11 14:43:33 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,11 +30,10 @@ _CUT		= "\033[k"
 NAME		= philo_one
 
 CC			= clang
-CFLAGS		= -lpthread -Wall -Wextra -Werror -g3 -fsanitize=address,undefined 
+CFLAGS		= -lpthread -Wall -Wextra -Werror #-g3 -fsanitize=address,undefined 
 DEPS		= philo_one.h
 
-SRCS		= philo_one.c state_functions.c free.c \
-				../utils_args_to_int.c ../utils_time_and_print.c
+SRCS		= philo_one.c state_functions.c free.c utils.c
 OBJS		= $(SRCS:.c=.o)
 
 #ARGS
