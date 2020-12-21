@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_time_and_print.c                             :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2020/12/11 13:50:17 by user42           ###   ########.fr       */
+/*   Created: 2020/12/01 19:22:20 by user42            #+#    #+#             */
+/*   Updated: 2020/12/21 22:35:37 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./philo_three.h"
+#include "./philo_one.h"
 
 /*
-** get_time: returns time in µs (microseconds)
-** Multiply the return value by 1000 to get ms (milliseconds)
+** get_time: returns time in ms (milliseconds)
 */
 
-size_t	get_time(void)
+size_t		get_time(void)
 {
 	struct timeval	start;
 
@@ -26,7 +25,7 @@ size_t	get_time(void)
 	return (start.tv_sec * 1000 + start.tv_usec / 1000);
 }
 
-int		len_of_timestamp_x(size_t time, int index)
+static int	len_of_timestamp_x(size_t time, int index)
 {
 	int		len;
 
@@ -52,17 +51,17 @@ int		len_of_timestamp_x(size_t time, int index)
 ** print_activity: prints the change of state of a philosopher
 */
 
-void	print_activity(size_t time, int index, char *activity, sem_t *lock)
+void		print_activity(size_t time, int index, char *activity,								pthread_mutex_t *lock)
 {
 	char	msg[100];
 	int		len;
 	int		activity_index;
-	int		unlock;
+	int		print_lock;
 
+	lock = 0;
+	if (activity[1] == 'd')
+		print_lock = 1;
 	memset(msg, '\0', sizeof(msg));
-	unlock = 0;
-	if (activity[1] != 'd' && ((time = time - time % 10) >= 0))
-		unlock = 1;
 	len = len_of_timestamp_x(time, index);
 	activity_index = len + 1;
 	while (len >= 0 && index && (msg[len--] = index % 10 + '0'))
@@ -74,8 +73,8 @@ void	print_activity(size_t time, int index, char *activity, sem_t *lock)
 	while (activity && *activity && activity_index < 99)
 		msg[activity_index++] = *activity++;
 	msg[activity_index] = '\n';
-	sem_wait(lock);
+	pthread_mutex_lock(lock);
 	write(1, msg, 100);
-	if (unlock)
-		sem_post(lock);
+	if (!print_lock)
+		pthread_mutex_unlock(lock);
 }

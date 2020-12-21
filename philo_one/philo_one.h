@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2020/12/11 14:42:54 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/21 22:50:19 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,22 @@
 # include <sys/time.h>
 # include <string.h>
 
-# define FORK		" has taken a fork"
+# define FORKR		" has taken a fork"
+# define FORKL		" has taken a fork"
 # define EAT		" is eating"
 # define SLEEP		" is sleeping"
 # define THINK		" is thinking"
 # define DIE		" died"
 # define YUMMY		" Everybody was fed! :)"
+# define FULL		5
+
+typedef enum		e_state{
+	DEAD,
+	THINKING,
+	TAKING_FORK,
+	EATING,
+	SLEEPING
+}					t_state;
 
 typedef struct		s_args{
 	int					number_of_philosophers;
@@ -33,11 +43,13 @@ typedef struct		s_args{
 	int					time_to_sleep;
 	int					times_philo_must_eat;
 	size_t				start_time;
+	pthread_mutex_t		*print_lock;
 }					t_args;
 
 typedef struct		s_one{
 	t_args				*args;
 	int					index;
+	t_state				state;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	pthread_t			thread;
@@ -46,9 +58,11 @@ typedef struct		s_one{
 	struct s_one		*next;
 }					t_one;
 
+typedef int			(*t_function)(t_one *philo, int *i, pthread_mutex_t **lock);
 int					parse_args(t_args *arg, int argc, char **argv);
 size_t				get_time(void);
-void				print_activity(size_t time, int index, char *act);
+void				print_activity(size_t time, int index, char *activity,
+						pthread_mutex_t *lock);
 void				*being_a_philosopher(void *arg);
 int					free_philosophers(t_args **args, t_one *one, int ret);
 
