@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2020/12/09 17:15:58 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/11 17:39:32 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,16 @@ int		take_fork(t_three *philo, int index, t_args *args)
 
 int		eat(t_three *philo, int index, t_args *args)
 {
-	size_t	time_to_eat_and_die;
-
-	if (args->times_must_eat < -1 || philo->eaten_meals == args->times_must_eat)
+	if (args->times_must_eat < -1 || philo->eaten_meals == args->times_must_eat
+		|| philo->time_of_death < get_time())
 	{
 		sem_post(args->forks);
 		sem_post(args->forks);
 		return (EXIT_FAILURE);
 	}
-	time_to_eat_and_die = (args->time_to_eat + args->time_to_die);
-	philo->time_of_death = get_time() + time_to_eat_and_die;
-	if (philo->time_of_death > get_time())
-		print_activity(get_time() - args->start_time, index, EAT, args->lock);
-	usleep(999 * args->time_to_eat);
+	print_activity(get_time() - args->start_time, index, EAT, args->lock);
+	philo->time_of_death = get_time() + args->time_to_die;
+	usleep(1000 * args->time_to_eat);
 	sem_post(args->forks);
 	sem_post(args->forks);
 	if (philo->eaten_meals >= 0)
@@ -60,7 +57,7 @@ int		sleep_tight(t_three *philo, int index, t_args *args)
 		return (EXIT_FAILURE);
 	if (philo->time_of_death > get_time())
 		print_activity(get_time() - args->start_time, index, SLEEP, args->lock);
-	usleep(999 * args->time_to_sleep);
+	usleep(1000 * args->time_to_sleep);
 	return (EXIT_SUCCESS);
 }
 

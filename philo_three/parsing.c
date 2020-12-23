@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/01 19:22:20 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 22:17:19 by user42           ###   ########.fr       */
+/*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
+/*   Updated: 2020/12/23 15:00:31 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./philo_one.h"
+#include "./philo_three.h"
 
 /*
 ** basic_atoi: only for positive values
@@ -40,24 +40,17 @@ static int	basic_atoi(char *str)
 
 int			parse_args(t_args *arg, int argc, char **argv)
 {
+	if (!argv[5])
+		arg->times_must_eat = -1;
 	if (argc < 5 || argc > 6)
-	{
 		write(2, "\nError: Invalid number of arguments", 36);
-		return (EXIT_FAILURE);
-	}
-	if ((arg->number_of_philosophers = basic_atoi(argv[1])) <= 0
+	else if ((arg->number_of_philosophers = basic_atoi(argv[1])) <= 0
 		|| (arg->time_to_die = basic_atoi(argv[2])) < 0
 		|| (arg->time_to_eat = basic_atoi(argv[3])) < 0
 		|| (arg->time_to_sleep = basic_atoi(argv[4])) < 0
-		|| (argv[5]
-		&& (arg->times_must_eat = basic_atoi(argv[5])) < 0))
-	{
+		|| (argv[5] && (arg->times_must_eat = (int)basic_atoi(argv[5])) < 0))
 		write(2, "\nError: Invalid format of an argument", 38);
-		return (EXIT_FAILURE);
-	}
-	if (!argv[5])
-		arg->times_must_eat = -1;
-	arg->start_time = 0;
-	arg->print_lock = NULL;
-	return (EXIT_SUCCESS);
+	else
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }

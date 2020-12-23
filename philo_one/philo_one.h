@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2020/12/21 22:50:19 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 22:16:31 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 # include <sys/time.h>
 # include <string.h>
 
-# define FORKR		" has taken a fork"
-# define FORKL		" has taken a fork"
+# define FORK		" has taken a fork"
+# define FORKL		" has taken L fork"
+# define FORKR		" has taken R fork"
 # define EAT		" is eating"
 # define SLEEP		" is sleeping"
 # define THINK		" is thinking"
@@ -41,7 +42,7 @@ typedef struct		s_args{
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
-	int					times_philo_must_eat;
+	int					times_must_eat;
 	size_t				start_time;
 	pthread_mutex_t		*print_lock;
 }					t_args;
@@ -58,7 +59,7 @@ typedef struct		s_one{
 	struct s_one		*next;
 }					t_one;
 
-typedef int			(*t_function)(t_one *philo, int *i, pthread_mutex_t **lock);
+typedef int			(*t_function)(t_one *philo, int *i, pthread_mutex_t *lock);
 int					parse_args(t_args *arg, int argc, char **argv);
 size_t				get_time(void);
 void				print_activity(size_t time, int index, char *activity,

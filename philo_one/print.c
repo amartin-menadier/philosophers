@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:22:20 by user42            #+#    #+#             */
-/*   Updated: 2020/12/21 22:35:37 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 11:28:52 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,18 @@ static int	len_of_timestamp_x(size_t time, int index)
 ** print_activity: prints the change of state of a philosopher
 */
 
-void		print_activity(size_t time, int index, char *activity,								pthread_mutex_t *lock)
+void		print_activity(size_t time, int index, char *activity,
+				pthread_mutex_t *lock)
 {
 	char	msg[100];
 	int		len;
 	int		activity_index;
 	int		print_lock;
 
-	lock = 0;
-	if (activity[1] == 'd')
-		print_lock = 1;
+	if (time == 1)
+		time -= 1;
+	if ((print_lock = activity[1]) != 'd')
+		print_lock = 0;
 	memset(msg, '\0', sizeof(msg));
 	len = len_of_timestamp_x(time, index);
 	activity_index = len + 1;

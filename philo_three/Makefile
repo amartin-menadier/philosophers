@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/28 09:41:35 by celeloup          #+#    #+#              #
-#    Updated: 2020/12/11 14:13:22 by user42           ###   ########.fr        #
+#    Updated: 2020/12/23 15:01:40 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ CC			= clang
 CFLAGS		= -lpthread -Wall -Wextra -Werror #-g3 -fsanitize=address,undefined 
 DEPS		= philo_three.h
 
-SRCS		= philo_three.c state_functions.c utils.c
+SRCS		= philo_three.c state_functions.c parsing.c print.c
 OBJS		= $(SRCS:.c=.o)
 
 #ARGS

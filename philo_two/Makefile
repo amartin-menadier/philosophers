@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/28 09:41:35 by celeloup          #+#    #+#              #
-#    Updated: 2020/12/11 14:41:12 by user42           ###   ########.fr        #
+#    Updated: 2020/12/22 22:32:00 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,17 +30,17 @@ _CUT		= "\033[k"
 NAME		= philo_two
 
 CC			= clang
-CFLAGS		= -lpthread -Wall -Wextra -Werror #-g3 -fsanitize=address,undefined 
+CFLAGS		= -lpthread -Wall -Wextra -Werror -g3 -fsanitize=address,undefined 
 DEPS		= philo_two.h
 
-SRCS		= philo_two.c state_functions.c utils.c 
+SRCS		= philo_two.c state_functions.c parsing.c print.c 
 OBJS		= $(SRCS:.c=.o)
 
 #ARGS
 NUMBER_OF_PHILOSOPHERS					=     7 #philosophers
 TIME_TO_DIE								= 15000 #ms to die
 TIME_TO_EAT								=  200 #ms to eat
-TIME_TO_SLEEP							=   5#ms to sleep
+TIME_TO_SLEEP							=   5 #ms to sleep
 NUMBER_OF_TIME_EACH_PHILOSOPHER_MUST_EAT= 	   #meals needed
 
 

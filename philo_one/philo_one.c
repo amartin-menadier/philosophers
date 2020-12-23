@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2020/12/21 22:28:26 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/22 22:17:06 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static int	recruit_philosophers(t_args *args, t_one *philo, int index)
 	philo->time_of_death = 0;
 	philo->right_fork = NULL;
 	philo->eaten_meals = 0;
-	if (!(philo->left_fork = malloc(sizeof(pthread_mutex_t))))
+	if (!(philo->left_fork = malloc(sizeof(pthread_mutex_t)))
+		|| pthread_mutex_init(philo->left_fork, NULL))
 		return (EXIT_FAILURE);
-	pthread_mutex_init(philo->left_fork, NULL);
 	if (index == args->number_of_philosophers)
 		philo->next = NULL;
 	else if (!(philo->next = (t_one *)malloc(sizeof(t_one))))
@@ -67,7 +67,7 @@ static void	wait_till_the_end(t_one *philo, t_args *args, pthread_mutex_t *lock)
 	usleep(args->time_to_die * 1000);
 	while (get_time() < philo->time_of_death)
 	{
-		if (philo->eaten_meals == args->times_philo_must_eat)
+		if (philo->eaten_meals == args->times_must_eat)
 			full_philosophers++;
 		if (philo->next)
 			philo = philo->next;
@@ -79,7 +79,7 @@ static void	wait_till_the_end(t_one *philo, t_args *args, pthread_mutex_t *lock)
 		else
 			break ;
 	}
-	args->times_philo_must_eat = -2;
+	args->times_must_eat = -2;
 	if (full_philosophers != args->number_of_philosophers)
 		print_activity(get_time() - args->start_time, philo->index, DIE, lock);
 	pthread_detach(philo->thread);
@@ -95,6 +95,8 @@ int			main(int argc, char **argv)
 	philo = NULL;
 	if (!(args = malloc(sizeof(t_args)))
 		|| parse_args(args, argc, argv)
+		|| !(args->print_lock = malloc(sizeof(pthread_mutex_t)))
+		|| pthread_mutex_init(args->print_lock, NULL)
 		|| !(philo = malloc(sizeof(t_one)))
 		|| recruit_philosophers(args, philo, 1)
 		|| link_forks(philo, NULL, 1)
