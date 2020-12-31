@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/28 09:41:35 by celeloup          #+#    #+#              #
-#    Updated: 2020/12/22 22:32:00 by user42           ###   ########.fr        #
+#    Updated: 2020/12/23 15:03:01 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ _CUT		= "\033[k"
 NAME		= philo_two
 
 CC			= clang
-CFLAGS		= -lpthread -Wall -Wextra -Werror -g3 -fsanitize=address,undefined 
+CFLAGS		= -lpthread -Wall -Wextra -Werror -g3 #-fsanitize=address,undefined 
 DEPS		= philo_two.h
 
 SRCS		= philo_two.c state_functions.c parsing.c print.c 

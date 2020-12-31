@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils copy.c                                       :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2020/12/23 15:01:08 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/31 15:17:07 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,19 @@ static int	len_of_timestamp_x(size_t time, int index)
 ** print_activity: prints the change of state of a philosopher
 */
 
-void		print_activity(size_t time, int index, char *activity, sem_t *lock)
+void		print_activity(size_t time, int index, char *activity, sem_t **lock)
 {
 	char	msg[100];
 	int		len;
 	int		activity_index;
-	int		unlock;
 
+	if (*lock)
+		sem_wait(*lock);
+	else
+		return ;
+	if (activity[1] == 'd' && !sem_close(*lock))
+		*lock = NULL;
 	memset(msg, '\0', sizeof(msg));
-	unlock = 0;
-	if (activity[1] != 'd' && ((time = time - time % 10) >= 0))
-		unlock = 1;
 	len = len_of_timestamp_x(time, index);
 	activity_index = len + 1;
 	while (len >= 0 && index && (msg[len--] = index % 10 + '0'))
@@ -73,8 +75,7 @@ void		print_activity(size_t time, int index, char *activity, sem_t *lock)
 	while (activity && *activity && activity_index < 99)
 		msg[activity_index++] = *activity++;
 	msg[activity_index] = '\n';
-	sem_wait(lock);
 	write(1, msg, 100);
-	if (unlock)
-		sem_post(lock);
+	if (*lock)
+		sem_post(*lock);
 }
