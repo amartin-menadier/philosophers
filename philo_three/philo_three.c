@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2020/12/31 15:30:15 by user42           ###   ########.fr       */
+/*   Updated: 2021/01/04 12:17:13 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ static int	recruit_philosophers(t_args *args, pid_t *pids)
 
 	index = 1;
 	args->start_time = get_time();
+	if (args->number_of_philosophers == 1)
+		return (print_alone(args->time_to_die, args->lock));
 	while (index <= args->number_of_philosophers)
 	{
 		if ((pid = fork()) == -1)

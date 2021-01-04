@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 22:16:25 by user42           ###   ########.fr       */
+/*   Updated: 2021/01/04 12:18:46 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef int		(*t_function)(t_two *philo, int *i, sem_t *lock);
 int				parse_args(t_args *arg, int argc, char **argv);
 size_t			get_time(void);
 void			print_activity(size_t time, int index, char *act, sem_t *lock);
+int				print_alone(int time_to_die, sem_t *lock);
 void			*being_a_philosopher(void *arg);
 
 #endif

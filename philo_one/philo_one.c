@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 22:17:06 by user42           ###   ########.fr       */
+/*   Updated: 2021/01/04 11:48:24 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	recruit_philosophers(t_args *args, t_one *philo, int index)
 	philo->args = args;
 	philo->state = THINKING;
 	philo->index = index;
-	philo->thread = -1;
 	philo->time_of_death = 0;
 	philo->right_fork = NULL;
 	philo->eaten_meals = 0;
