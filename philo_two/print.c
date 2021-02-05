@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2021/01/04 12:19:06 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/23 13:36:40 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,4 @@ void		print_activity(size_t time, int index, char *activity, sem_t *lock)
 	write(1, msg, 100);
 	if (!print_lock)
 		sem_post(lock);
-}
-
-int			print_alone(int time_to_die, sem_t *lock)
-{
-	print_activity(0, 1, THINK, lock);
-	print_activity(0, 1, FORK, lock);
-	usleep(time_to_die * 1000);
-	print_activity(time_to_die, 1, DIE, lock);
-	return (EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2021/01/04 12:18:53 by user42           ###   ########.fr       */
+/*   Updated: 2021/02/03 20:59:32 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ void		print_activity(size_t time, int index, char *activity, sem_t **lock)
 	int		len;
 	int		activity_index;
 
-	if (*lock)
+	if (lock && *lock)
 		sem_wait(*lock);
 	else
 		return ;
-	if (activity[1] == 'd' && !sem_close(*lock))
+	if (activity[1] == 'd' && lock && !sem_close(*lock))
 		*lock = NULL;
 	memset(msg, '\0', sizeof(msg));
 	len = len_of_timestamp_x(time, index);
@@ -76,15 +76,6 @@ void		print_activity(size_t time, int index, char *activity, sem_t **lock)
 		msg[activity_index++] = *activity++;
 	msg[activity_index] = '\n';
 	write(1, msg, 100);
-	if (*lock)
+	if (lock && *lock)
 		sem_post(*lock);
-}
-
-int			print_alone(int time_to_die, sem_t **lock)
-{
-	print_activity(0, 1, THINK, lock);
-	print_activity(0, 1, FORK, lock);
-	usleep(time_to_die * 1000);
-	print_activity(time_to_die, 1, DIE, lock);
-	return (EXIT_FAILURE);
 }

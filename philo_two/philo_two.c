@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/01/04 12:25:12 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/23 13:24:29 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,6 @@ static int	recruit_philosophers(t_args *args, t_two **philo, int index)
 	(*philo)->state = THINKING;
 	(*philo)->time_of_death = 0;
 	(*philo)->eaten_meals = 0;
-	(*philo)->thread = (pthread_t)NULL;
-	if (args->number_of_philosophers == 1)
-		return (print_alone(args->time_to_die, args->lock));
 	if (index == args->number_of_philosophers)
 		(*philo)->next = NULL;
 	else
