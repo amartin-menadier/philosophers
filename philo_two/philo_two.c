@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 21:23:08 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 21:31:31 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static int	free_philosophers(t_args *args, t_two **philo, int ret)
 	write(1, "Starting to free\n", 18);
 	if ((*philo)->next)
 		free_philosophers(args, &(*philo)->next, ret);
-	write(1, "Detaching thread\n", 18);
-	pthread_detach((*philo)->thread);
+//	write(1, "Detaching thread\n", 18);
+//	pthread_detach((*philo)->thread);
 	(*philo)->thread = 0;		
 	if (*philo && (*philo)->index == 1 && args)
 	{
@@ -72,7 +72,7 @@ static void	wait_till_the_end(t_two *philo, t_args *args, sem_t *lock)
 		else
 			philo = first;
 	}
-//	args->times_must_eat = -2;
+	args->times_must_eat = -2;
 	if (full_philosophers != args->philo_count)
 		print_activity(get_time() - args->start_time, philo->index, DIE, lock);
 //	pthread_detach(philo->thread);

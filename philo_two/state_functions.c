@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 20:41:08 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 21:40:40 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 static int		think(t_two *philo, int *index, sem_t *lock)
 {
+	size_t	activity_end;
+
 	print_activity(get_time() - philo->args->start_time, *index, THINK, lock);
 	if (philo->index % 2 && philo->args->philo_count != 1
 		&& !philo->eaten_meals)
 	{
-		philo->time_activity_end = get_time() + philo->args->time_to_eat;
-		while (get_time() < philo->time_activity_end)
+		activity_end = get_time() + philo->args->time_to_eat;
+		while (philo && get_time() < activity_end)
 			usleep (50);
 	}
 	if (philo && philo->state)
@@ -43,10 +45,12 @@ static int		take_fork(t_two *philo, int *index, sem_t *lock)
 
 static int		eat(t_two *philo, int *index, sem_t *lock)
 {
+	size_t	activity_end;
+
 	print_activity(get_time() - philo->args->start_time, *index, EAT, lock);
-	philo->time_activity_end = get_time() + philo->args->time_to_eat;
+	activity_end = get_time() + philo->args->time_to_eat;
 	philo->time_of_death = get_time() + philo->args->time_to_die;
-	while (get_time() < philo->time_activity_end)
+	while (philo && get_time() < activity_end)
 		usleep (50);
 	if (!philo)
 		return (EXIT_FAILURE);
@@ -61,9 +65,11 @@ static int		eat(t_two *philo, int *index, sem_t *lock)
 
 static int		dream(t_two *philo, int *index, sem_t *lock)
 {
+	size_t	activity_end;
+
 	print_activity(get_time() - philo->args->start_time, *index, SLEEP, lock);
-	philo->time_activity_end = get_time() + philo->args->time_to_sleep;
-	while (get_time() < philo->time_activity_end)
+	activity_end = get_time() + philo->args->time_to_sleep;
+	while (philo && get_time() < activity_end)
 		usleep (50);
 	if (!philo)
 		return (EXIT_FAILURE);
