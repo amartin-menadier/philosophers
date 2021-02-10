@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_one.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 00:20:08 by user42           ###   ########.fr       */
+/*   Updated: 2021/02/10 15:56:09 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # define DIE		" died"
 # define YUMMY		" Everybody was fed! :)"
 # define FULL		5
+
+# define ARG_COUNT		1
+# define ARG_FORMAT		2
 
 typedef enum		e_state{
 	DEAD,
