@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 16:24:26 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:40:45 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef enum		e_state{
 }					t_state;
 
 typedef struct	s_args{
-	int				number_of_philosophers;
+	int				philo_count;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;

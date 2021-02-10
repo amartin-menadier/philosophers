@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 16:24:19 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:59:09 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ static void	wait_till_the_end(t_two *philo, t_args *args, sem_t *lock)
 
 	first = philo;
 	full_philosophers = 0;
-	usleep(args->time_to_die * 1000);
+	usleep(50);
 	while (get_time() < philo->time_of_death)
 	{
 		if (philo->eaten_meals == args->times_must_eat)
 			full_philosophers++;
 		if (philo->next)
 			philo = philo->next;
-		else if (full_philosophers != args->number_of_philosophers)
+		else if (full_philosophers != args->philo_count)
 		{
 			philo = first;
 			full_philosophers = 0;
@@ -70,7 +70,7 @@ static void	wait_till_the_end(t_two *philo, t_args *args, sem_t *lock)
 			break ;
 	}
 	args->times_must_eat = -2;
-	if (full_philosophers != args->number_of_philosophers)
+	if (full_philosophers != args->philo_count)
 		print_activity(get_time() - args->start_time, philo->index, DIE, lock);
 	pthread_detach(philo->thread);
 	return ;
@@ -85,7 +85,7 @@ static int	recruit_philosophers(t_args *args, t_two **philo, int index)
 	(*philo)->state = THINKING;
 	(*philo)->time_of_death = 0;
 	(*philo)->eaten_meals = 0;
-	if (index == args->number_of_philosophers)
+	if (index == args->philo_count)
 		(*philo)->next = NULL;
 	else
 		return (recruit_philosophers(args, &(*philo)->next, index + 1));
@@ -94,8 +94,8 @@ static int	recruit_philosophers(t_args *args, t_two **philo, int index)
 
 int			main(int argc, char **argv)
 {
-	t_args			*arg;
-	t_two			*philo;
+	t_args	*arg;
+	t_two	*philo;
 
 	arg = NULL;
 	philo = NULL;
@@ -107,7 +107,7 @@ int			main(int argc, char **argv)
 	philo->index = 1;
 	sem_unlink("/forks");
 	sem_unlink("/lock");
-	arg->forks = sem_open("/forks", O_CREAT, 0660, arg->number_of_philosophers);
+	arg->forks = sem_open("/forks", O_CREAT, 0660, arg->philo_count);
 	arg->lock = sem_open("/lock", O_CREAT, 0660, 1);
 	if (arg->forks == SEM_FAILED || arg->lock == SEM_FAILED
 		|| recruit_philosophers(arg, &philo, 1)

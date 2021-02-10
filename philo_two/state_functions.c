@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 16:27:29 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:56:52 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int		think(t_two *philo, int *index, sem_t *lock)
 {
 	print_activity(get_time() - philo->args->start_time, *index, THINK, lock);
-	if (philo->index % 2 && philo->args->number_of_philosophers != 1
+	if (philo->index % 2 && philo->args->philo_count != 1
 		&& !philo->eaten_meals)
 	{
 		philo->time_activity_end = get_time() + philo->args->time_to_eat;
@@ -43,8 +43,8 @@ static int		take_fork(t_two *philo, int *index, sem_t *lock)
 static int		eat(t_two *philo, int *index, sem_t *lock)
 {
 	print_activity(get_time() - philo->args->start_time, *index, EAT, lock);
-	philo->time_of_death = get_time() + philo->args->time_to_die;
 	philo->time_activity_end = get_time() + philo->args->time_to_eat;
+	philo->time_of_death = get_time() + philo->args->time_to_die;
 	while (get_time() < philo->time_activity_end)
 		usleep (50);
 	if (!philo)
@@ -80,13 +80,13 @@ void			*being_a_philosopher(void *arg)
 
 	philo = (t_two *)arg;
 	lock = philo->args->lock;
-	if (philo->index == philo->args->number_of_philosophers)
+	if (philo->index == philo->args->philo_count)
 		philo->args->start_time = get_time();
 	while (!philo->args->start_time)
 		usleep(50);
 	philo->time_of_death = get_time() + philo->args->time_to_die;
 	while (philo && philo->args->times_must_eat >= -1 && philo->state
 		&& !life[philo->state - 1](philo, &philo->index, lock))
-		;
+		usleep(50);
 	return (NULL);
 }
