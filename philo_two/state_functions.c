@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 21:51:18 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 21:55:37 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int		think(t_two *philo, int *index, sem_t *lock)
 static int		take_fork(t_two *philo, int *index, sem_t *lock)
 {
 	sem_wait(philo->args->fork_pairs);
-	if (!philo)
+	if (philo->args->times_must_eat < -1)
 		return (EXIT_FAILURE);
 	print_activity(get_time() - philo->args->start_time, *index, FORK, lock);
 	print_activity(get_time() - philo->args->start_time, *index, FORK, lock);
@@ -52,12 +52,9 @@ static int		eat(t_two *philo, int *index, sem_t *lock)
 	philo->time_of_death = get_time() + philo->args->time_to_die;
 	while (philo->args->times_must_eat >= -1 && get_time() < activity_end)
 		usleep (50);
-	if (philo->args->times_must_eat < -1)
-	{
 	sem_post(philo->args->fork_pairs);
+	if (philo->args->times_must_eat < -1)
 		return (EXIT_FAILURE);
-	}
-		
 	philo->eaten_meals++;
 	if (philo->eaten_meals == philo->args->times_must_eat)
 		return (FULL);
@@ -72,9 +69,9 @@ static int		dream(t_two *philo, int *index, sem_t *lock)
 
 	print_activity(get_time() - philo->args->start_time, *index, SLEEP, lock);
 	activity_end = get_time() + philo->args->time_to_sleep;
-	while (philo && get_time() < activity_end)
+	while (philo->args->times_must_eat >= -1 && get_time() < activity_end)
 		usleep (50);
-	if (!philo)
+	if (philo->args->times_must_eat < -1)
 		return (EXIT_FAILURE);
 	if (philo->state)
 		philo->state = THINKING;
