@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 18:00:39 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 18:13:59 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static void	wait_till_the_end(t_two *philo, t_args *args, sem_t *lock)
 			philo->state = DEAD;
 			full_philosophers++;
 		}
-		if (!philo->state && philo->eaten_meals != args->times_must_eat)
+		if (get_time() > philo->time_of_death
+			&& philo->eaten_meals != args->times_must_eat)
 			break ;
 		if (philo->next)
 			philo = philo->next;
