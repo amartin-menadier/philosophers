@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 18:16:17 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 18:34:10 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,22 @@
 
 static int	free_philosophers(t_args **args, t_two *philo, int ret)
 {
-	if (philo)
-	{
-		philo->state = DEAD;
+	write(1, "Starting to free\n", 18);
+	if (philo->next)
 		free_philosophers(args, philo->next, ret);
-	}
-	if (philo && philo->thread)
-	{
-		pthread_detach(philo->thread);
-		philo->thread = 0;
-	}
 	if (philo && philo->index == 1)
 	{
+		write(1, "Starting to free first philo\n", 30);
 		sem_close((*args)->fork_pairs);
 		sem_unlink("forks");
 		sem_close((*args)->lock);
 		sem_unlink("/lock");
 		free(*args);
 	}
-	if (philo)
-		free(philo);
+	write(1, "Detaching\n", 11);
+	pthread_detach(philo->thread);
+	philo->thread = 0;
+	free (philo);
 	philo = NULL;
 	return (ret);
 }
