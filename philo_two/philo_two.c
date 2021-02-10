@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 18:38:58 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 18:39:16 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	free_philosophers(t_args **args, t_two *philo, int ret)
 		write(1, "Free args\n", 11);
 		free(*args);
 	}
-	write(1, "Detaching thread\n", 11);
+	write(1, "Detaching thread\n", 18);
 	pthread_detach(philo->thread);
 	philo->thread = 0;
 	free (philo);
