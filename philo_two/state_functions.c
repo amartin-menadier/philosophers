@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 17:06:02 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 20:41:08 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static int		think(t_two *philo, int *index, sem_t *lock)
 static int		take_fork(t_two *philo, int *index, sem_t *lock)
 {
 	sem_wait(philo->args->fork_pairs);
+	if (!philo)
+		return (EXIT_FAILURE);
 	print_activity(get_time() - philo->args->start_time, *index, FORK, lock);
 	print_activity(get_time() - philo->args->start_time, *index, FORK, lock);
 	if (philo->state)
