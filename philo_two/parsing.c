@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:53:41 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 17:00:33 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 18:48:22 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ static int	arg_error(int my_errno)
 int			parse_args(t_args *arg, int argc, char **argv)
 {
 	arg->start_time = 0;
+	arg->fork_pairs = NULL;
+	arg->lock = NULL;
 	if (!argv[5])
 		arg->times_must_eat = -1;
 	if (argc < 5 || argc > 6)
