@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 00:51:35 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/11 00:51:58 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		print_activity(size_t time, int index, char *activity, sem_t **lock)
 		time /= 10;
 	while (activity && *activity && activity_index < 29)
 		msg[activity_index++] = *activity++;
-	msg[29] = '\n';
+	msg[activity_index] = '\n';
 	write(1, msg, 100);
 	if (lock && *lock)
 		sem_post(*lock);
