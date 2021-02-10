@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 21:31:31 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 21:49:06 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static void	wait_till_the_end(t_two *philo, t_args *args, sem_t *lock)
 	args->times_must_eat = -2;
 	if (full_philosophers != args->philo_count)
 		print_activity(get_time() - args->start_time, philo->index, DIE, lock);
+	usleep(200);
 //	pthread_detach(philo->thread);
 	return ;
 }

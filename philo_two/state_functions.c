@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 21:40:40 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 21:48:27 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static int		eat(t_two *philo, int *index, sem_t *lock)
 	print_activity(get_time() - philo->args->start_time, *index, EAT, lock);
 	activity_end = get_time() + philo->args->time_to_eat;
 	philo->time_of_death = get_time() + philo->args->time_to_die;
-	while (philo && get_time() < activity_end)
+	while (philo->args->times_must_eat >= -1 && get_time() < activity_end)
 		usleep (50);
-	if (!philo)
+	if (philo->args->times_must_eat < -1)
 		return (EXIT_FAILURE);
 	sem_post(philo->args->fork_pairs);
 	philo->eaten_meals++;
