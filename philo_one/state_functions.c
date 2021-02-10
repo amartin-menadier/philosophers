@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   state_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 15:25:29 by user42           ###   ########.fr       */
+/*   Updated: 2021/02/10 23:03:36 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int		think(t_one *philo, int *index, pthread_mutex_t *lock)
 	{
 		philo->time_activity_end = get_time() + philo->args->time_to_eat;
 		while (get_time() < philo->time_activity_end)
-			usleep (50);
+			usleep(50);
 	}
 	if (philo && philo->state)
 		philo->state = TAKING_FORK;
@@ -46,7 +46,7 @@ static int		eat(t_one *philo, int *index, pthread_mutex_t *lock)
 	philo->time_of_death = get_time() + philo->args->time_to_die;
 	philo->time_activity_end = get_time() + philo->args->time_to_eat;
 	while (get_time() < philo->time_activity_end)
-		usleep (50);
+		usleep(50);
 	if (!philo)
 		return (EXIT_FAILURE);
 	pthread_mutex_unlock(philo->right_fork);
@@ -64,7 +64,7 @@ static int		dream(t_one *philo, int *index, pthread_mutex_t *lock)
 	print_activity(get_time() - philo->args->start_time, *index, SLEEP, lock);
 	philo->time_activity_end = get_time() + philo->args->time_to_sleep;
 	while (get_time() < philo->time_activity_end)
-		usleep (50);
+		usleep(50);
 	if (!philo)
 		return (EXIT_FAILURE);
 	if (philo->state)

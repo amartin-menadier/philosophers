@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:22:20 by user42            #+#    #+#             */
-/*   Updated: 2020/12/22 11:28:52 by user42           ###   ########.fr       */
+/*   Updated: 2021/02/11 00:36:17 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	len_of_timestamp_x(size_t time, int index)
 {
 	int		len;
 
-	len = 1;
+	len = 0;
 	if (!index)
 		len -= 2;
 	if (!time)
@@ -54,16 +54,15 @@ static int	len_of_timestamp_x(size_t time, int index)
 void		print_activity(size_t time, int index, char *activity,
 				pthread_mutex_t *lock)
 {
-	char	msg[100];
+	char	msg[30];
 	int		len;
 	int		activity_index;
 	int		print_lock;
 
-	if (time == 1)
-		time -= 1;
 	if ((print_lock = activity[1]) != 'd')
 		print_lock = 0;
-	memset(msg, '\0', sizeof(msg));
+	memset(msg, ' ', sizeof(msg));
+	msg[29] = '\n';
 	len = len_of_timestamp_x(time, index);
 	activity_index = len + 1;
 	while (len >= 0 && index && (msg[len--] = index % 10 + '0'))
@@ -72,11 +71,10 @@ void		print_activity(size_t time, int index, char *activity,
 	msg[len] = 0 + '0';
 	while (len >= 0 && (time) && (msg[len--] = (time) % 10 + '0'))
 		time /= 10;
-	while (activity && *activity && activity_index < 99)
+	while (activity && *activity && activity_index < 29)
 		msg[activity_index++] = *activity++;
-	msg[activity_index] = '\n';
 	pthread_mutex_lock(lock);
-	write(1, msg, 100);
+	write(1, msg, 30);
 	if (!print_lock)
 		pthread_mutex_unlock(lock);
 }

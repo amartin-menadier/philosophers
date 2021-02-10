@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 21:57:47 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 23:03:57 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,19 @@
 
 static int	free_philosophers(t_args *args, t_two **philo, int ret)
 {
-	write(1, "Starting to free\n", 18);
 	if ((*philo)->next)
 		free_philosophers(args, &(*philo)->next, ret);
-//	write(1, "Detaching thread\n", 18);
 	pthread_join((*philo)->thread, NULL);
-	(*philo)->thread = 0;		
+	(*philo)->thread = 0;
 	if (*philo && (*philo)->index == 1 && args)
 	{
-		write(1, "Sem_close_lock\n", 16);
 		sem_close(args->lock);
-		write(1, "Unlink lock\n", 13);
 		sem_unlink("/lock");
-		
-		write(1, "sem_close_forks\n", 17);
 		sem_close(args->fork_pairs);
-		write(1, "Unlink forks\n", 14);
 		sem_unlink("/forks");
-		
-		write(1, "Free args\n", 11);
 		free(args);
 	}
-	free (*philo);
+	free(*philo);
 	*philo = NULL;
 	return (ret);
 }
@@ -56,7 +47,6 @@ static void	wait_till_the_end(t_two *philo, t_args *args, sem_t *lock)
 
 	first = philo;
 	full_philosophers = 0;
-//	usleep(50);
 	while (full_philosophers < args->philo_count)
 	{
 		if (philo->state && philo->eaten_meals == args->times_must_eat)
@@ -76,7 +66,6 @@ static void	wait_till_the_end(t_two *philo, t_args *args, sem_t *lock)
 	if (full_philosophers != args->philo_count)
 		print_activity(get_time() - args->start_time, philo->index, DIE, lock);
 	usleep(200);
-//	pthread_detach(philo->thread);
 	return ;
 }
 
