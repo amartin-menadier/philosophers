@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2021/02/03 20:59:32 by user42           ###   ########.fr       */
+/*   Updated: 2021/02/11 00:11:37 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	len_of_timestamp_x(size_t time, int index)
 {
 	int		len;
 
-	len = 1;
+	len = 0;
 	if (!index)
 		len -= 2;
 	if (!time)
@@ -51,9 +51,38 @@ static int	len_of_timestamp_x(size_t time, int index)
 ** print_activity: prints the change of state of a philosopher
 */
 
+/*
 void		print_activity(size_t time, int index, char *activity, sem_t **lock)
 {
-	char	msg[100];
+	char	msg[30];
+	int		len;
+	int		activity_index;
+	int		print_lock;
+
+	if ((print_lock = activity[1]) != 'd')
+		print_lock = 0;
+	memset(msg, ' ', sizeof(msg));
+	msg[29] = '\n';
+	len = len_of_timestamp_x(time, index);
+	activity_index = len + 1;
+	while (len >= 0 && index && (msg[len--] = index % 10 + '0'))
+		index /= 10;
+	len--;
+	msg[len] = 0 + '0';
+	while (len >= 0 && (time) && (msg[len--] = (time) % 10 + '0'))
+		time /= 10;
+	while (activity && *activity && activity_index < 29)
+		msg[activity_index++] = *activity++;
+	sem_wait(*lock);
+	write(1, msg, 30);
+	if (!print_lock)
+		sem_post(*lock);
+}
+*/
+
+void		print_activity(size_t time, int index, char *activity, sem_t **lock)
+{
+	char	msg[30];
 	int		len;
 	int		activity_index;
 
@@ -63,7 +92,8 @@ void		print_activity(size_t time, int index, char *activity, sem_t **lock)
 		return ;
 	if (activity[1] == 'd' && lock && !sem_close(*lock))
 		*lock = NULL;
-	memset(msg, '\0', sizeof(msg));
+	memset(msg, ' ', sizeof(msg));
+	msg[29] = '\n';
 	len = len_of_timestamp_x(time, index);
 	activity_index = len + 1;
 	while (len >= 0 && index && (msg[len--] = index % 10 + '0'))
@@ -72,10 +102,9 @@ void		print_activity(size_t time, int index, char *activity, sem_t **lock)
 	msg[len] = 0 + '0';
 	while (len >= 0 && (time) && (msg[len--] = (time) % 10 + '0'))
 		time /= 10;
-	while (activity && *activity && activity_index < 99)
+	while (activity && *activity && activity_index < 29)
 		msg[activity_index++] = *activity++;
-	msg[activity_index] = '\n';
-	write(1, msg, 100);
+	write(1, msg, 30);
 	if (lock && *lock)
 		sem_post(*lock);
 }

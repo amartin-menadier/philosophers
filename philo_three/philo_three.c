@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_three.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2020/12/31 15:30:15 by user42           ###   ########.fr       */
+/*   Updated: 2021/02/10 23:12:08 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ static void	wait_till_the_end(pid_t *pids, t_args *args)
 
 	full_philosophers = 0;
 	i = 0;
-	while (full_philosophers < args->number_of_philosophers)
+	while (full_philosophers < args->philo_count)
 	{
 		waitpid(-1, &status, 0);
 		if ((status = WEXITSTATUS(status)) != 0)
 		{
-			while (i < args->number_of_philosophers)
+			while (i < args->philo_count)
 			{
 				kill(pids[i], SIGKILL);
 				i++;
@@ -86,7 +86,7 @@ static int	recruit_philosophers(t_args *args, pid_t *pids)
 
 	index = 1;
 	args->start_time = get_time();
-	while (index <= args->number_of_philosophers)
+	while (index <= args->philo_count)
 	{
 		if ((pid = fork()) == -1)
 			return (EXIT_FAILURE);
@@ -117,21 +117,21 @@ int			main(int argc, char **argv)
 	pids = NULL;
 	memset(&arg, 0, sizeof(t_args));
 	if (parse_args(&arg, argc, argv)
-		|| (!(pids = malloc(sizeof(pid_t) * arg.number_of_philosophers))))
+		|| (!(pids = malloc(sizeof(pid_t) * arg.philo_count))))
 		return (EXIT_FAILURE);
 	sem_unlink("/forks");
 	sem_unlink("/lock");
-	arg.forks = sem_open("/forks", O_CREAT, 0660, arg.number_of_philosophers);
+	arg.fork_pairs = sem_open("/forks", O_CREAT, 0660, arg.philo_count / 2);
 	print = sem_open("/lock", O_CREAT, 0660, 1);
 	arg.lock = &print;
-	if (arg.forks == SEM_FAILED || print == SEM_FAILED
+	if (arg.fork_pairs == SEM_FAILED || print == SEM_FAILED
 		|| recruit_philosophers(&arg, pids))
 	{
 		free(pids);
 		return (EXIT_FAILURE);
 	}
 	wait_till_the_end(pids, &arg);
-	sem_close(arg.forks);
+	sem_close(arg.fork_pairs);
 	sem_close(print);
 	free(pids);
 	return (EXIT_SUCCESS);

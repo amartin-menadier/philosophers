@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_three.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2021/02/03 20:59:45 by user42           ###   ########.fr       */
+/*   Updated: 2021/02/10 23:14:57 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ typedef enum	e_state{
 }				t_state;
 
 typedef struct	s_args{
-	int			number_of_philosophers;
+	int			philo_count;
 	int			time_to_die;
 	int			time_to_eat;
 	int			time_to_sleep;
 	int			times_must_eat;
-	sem_t		*forks;
+	sem_t		*fork_pairs;
 	sem_t		**lock;
 	size_t		start_time;
 }				t_args;
