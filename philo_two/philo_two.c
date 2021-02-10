@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 18:34:10 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 18:38:58 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,18 @@ static int	free_philosophers(t_args **args, t_two *philo, int ret)
 		free_philosophers(args, philo->next, ret);
 	if (philo && philo->index == 1)
 	{
-		write(1, "Starting to free first philo\n", 30);
+		write(1, "sem_close_forks\n", 17);
 		sem_close((*args)->fork_pairs);
-		sem_unlink("forks");
+		write(1, "Unlink forks\n", 14);
+		sem_unlink("/forks");
+		write(1, "Sem_close_lock\n", 16);
 		sem_close((*args)->lock);
+		write(1, "Unlink lock\n", 13);
 		sem_unlink("/lock");
+		write(1, "Free args\n", 11);
 		free(*args);
 	}
-	write(1, "Detaching\n", 11);
+	write(1, "Detaching thread\n", 11);
 	pthread_detach(philo->thread);
 	philo->thread = 0;
 	free (philo);
@@ -102,9 +106,9 @@ int			main(int argc, char **argv)
 		return (free_philosophers(&arg, philo, EXIT_FAILURE));
 	philo->next = NULL;
 	philo->index = 1;
-	sem_unlink("forks");
+	sem_unlink("/forks");
 	sem_unlink("/lock");
-	arg->fork_pairs = sem_open("forks", O_CREAT, 0660, arg->philo_count / 2);
+	arg->fork_pairs = sem_open("/forks", O_CREAT, 0660, arg->philo_count / 2);
 	arg->lock = sem_open("/lock", O_CREAT, 0660, 1);
 	if (arg->fork_pairs == SEM_FAILED || arg->lock == SEM_FAILED
 		|| recruit_philosophers(arg, &philo, 1)
