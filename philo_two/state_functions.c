@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 21:48:27 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 21:51:18 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,11 @@ static int		eat(t_two *philo, int *index, sem_t *lock)
 	while (philo->args->times_must_eat >= -1 && get_time() < activity_end)
 		usleep (50);
 	if (philo->args->times_must_eat < -1)
-		return (EXIT_FAILURE);
+	{
 	sem_post(philo->args->fork_pairs);
+		return (EXIT_FAILURE);
+	}
+		
 	philo->eaten_meals++;
 	if (philo->eaten_meals == philo->args->times_must_eat)
 		return (FULL);
