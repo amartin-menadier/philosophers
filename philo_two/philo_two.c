@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 16:59:09 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 17:04:59 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static int	free_philosophers(t_args **args, t_two *philo, int ret)
 	}
 	if (philo && philo->index == 1)
 	{
-		sem_close((*args)->forks);
-		sem_unlink("/forks");
+		sem_close((*args)->fork_pairs);
+		sem_unlink("forks");
 		sem_close((*args)->lock);
 		sem_unlink("/lock");
 		free(*args);
@@ -105,11 +105,11 @@ int			main(int argc, char **argv)
 		return (free_philosophers(&arg, philo, EXIT_FAILURE));
 	philo->next = NULL;
 	philo->index = 1;
-	sem_unlink("/forks");
+	sem_unlink("forks");
 	sem_unlink("/lock");
-	arg->forks = sem_open("/forks", O_CREAT, 0660, arg->philo_count);
+	arg->fork_pairs = sem_open("forks", O_CREAT, 0660, arg->philo_count / 2);
 	arg->lock = sem_open("/lock", O_CREAT, 0660, 1);
-	if (arg->forks == SEM_FAILED || arg->lock == SEM_FAILED
+	if (arg->fork_pairs == SEM_FAILED || arg->lock == SEM_FAILED
 		|| recruit_philosophers(arg, &philo, 1)
 		|| start_simulation(philo, arg))
 		return (free_philosophers(&arg, philo, EXIT_FAILURE));
