@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 17:04:59 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 18:00:39 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,22 @@ static void	wait_till_the_end(t_two *philo, t_args *args, sem_t *lock)
 
 	first = philo;
 	full_philosophers = 0;
-	usleep(50);
-	while (get_time() < philo->time_of_death)
+//	usleep(50);
+	while (full_philosophers < args->philo_count)
 	{
-		if (philo->eaten_meals == args->times_must_eat)
+		if (philo->state && philo->eaten_meals == args->times_must_eat)
+		{
+			philo->state = DEAD;
 			full_philosophers++;
+		}
+		if (!philo->state && philo->eaten_meals != args->times_must_eat)
+			break ;
 		if (philo->next)
 			philo = philo->next;
-		else if (full_philosophers != args->philo_count)
-		{
-			philo = first;
-			full_philosophers = 0;
-		}
 		else
-			break ;
+			philo = first;
 	}
-	args->times_must_eat = -2;
+//	args->times_must_eat = -2;
 	if (full_philosophers != args->philo_count)
 		print_activity(get_time() - args->start_time, philo->index, DIE, lock);
 	pthread_detach(philo->thread);
