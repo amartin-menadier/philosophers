@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:53:41 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 16:11:32 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 17:00:33 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,13 @@ int			parse_args(t_args *arg, int argc, char **argv)
 		arg->times_must_eat = -1;
 	if (argc < 5 || argc > 6)
 		return (arg_error(ARG_COUNT));
-	else if ((arg->number_of_philosophers = basic_atoi(argv[1])) <= 0
+	else if ((arg->philo_count = basic_atoi(argv[1])) <= 0
 		|| (arg->time_to_die = basic_atoi(argv[2])) < 0
 		|| (arg->time_to_eat = basic_atoi(argv[3])) < 0
 		|| (arg->time_to_sleep = basic_atoi(argv[4])) < 0
 		|| (argv[5] && (arg->times_must_eat = (int)basic_atoi(argv[5])) < 0))
 		return (arg_error(ARG_FORMAT));
-	if (arg->number_of_philosophers == 1)
+	if (arg->philo_count == 1)
 		return (philo_alone(arg->time_to_die));
 	return (EXIT_SUCCESS);
 }
