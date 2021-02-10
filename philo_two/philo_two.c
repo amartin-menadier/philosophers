@@ -6,21 +6,21 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 20:39:46 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/10 21:23:08 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo_two.h"
 
-static int	free_philosophers(t_args *args, t_two *philo, int ret)
+static int	free_philosophers(t_args *args, t_two **philo, int ret)
 {
 	write(1, "Starting to free\n", 18);
-	if (philo->next)
-		free_philosophers(args, philo->next, ret);
+	if ((*philo)->next)
+		free_philosophers(args, &(*philo)->next, ret);
 	write(1, "Detaching thread\n", 18);
-	pthread_detach(philo->thread);
-	philo->thread = 0;		
-	if (philo && philo->index == 1 && args)
+	pthread_detach((*philo)->thread);
+	(*philo)->thread = 0;		
+	if (*philo && (*philo)->index == 1 && args)
 	{
 		write(1, "Sem_close_lock\n", 16);
 		sem_close(args->lock);
@@ -35,9 +35,8 @@ static int	free_philosophers(t_args *args, t_two *philo, int ret)
 		write(1, "Free args\n", 11);
 		free(args);
 	}
-
-	free (philo);
-	philo = NULL;
+	free (*philo);
+	*philo = NULL;
 	return (ret);
 }
 
@@ -106,7 +105,7 @@ int			main(int argc, char **argv)
 	if (!(arg = malloc(sizeof(t_args)))
 		|| parse_args(arg, argc, argv)
 		|| !(philo = malloc(sizeof(t_two))))
-		return (free_philosophers(arg, philo, EXIT_FAILURE));
+		return (free_philosophers(arg, &philo, EXIT_FAILURE));
 	philo->next = NULL;
 	philo->index = 1;
 	sem_unlink("/forks");
@@ -116,7 +115,7 @@ int			main(int argc, char **argv)
 	if (arg->fork_pairs == SEM_FAILED || arg->lock == SEM_FAILED
 		|| recruit_philosophers(arg, &philo, 1)
 		|| start_simulation(philo, arg))
-		return (free_philosophers(arg, philo, EXIT_FAILURE));
+		return (free_philosophers(arg, &philo, EXIT_FAILURE));
 	wait_till_the_end(philo, arg, arg->lock);
-	return (free_philosophers(arg, philo, EXIT_SUCCESS));
+	return (free_philosophers(arg, &philo, EXIT_SUCCESS));
 }
