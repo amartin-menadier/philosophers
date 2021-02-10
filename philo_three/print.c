@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 00:51:58 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/03 20:59:32 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void		print_activity(size_t time, int index, char *activity, sem_t **lock)
 	msg[len] = 0 + '0';
 	while (len >= 0 && (time) && (msg[len--] = (time) % 10 + '0'))
 		time /= 10;
-	while (activity && *activity && activity_index < 29)
+	while (activity && *activity && activity_index < 99)
 		msg[activity_index++] = *activity++;
 	msg[activity_index] = '\n';
 	write(1, msg, 100);
