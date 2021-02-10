@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2021/02/03 21:13:12 by user42           ###   ########.fr       */
+/*   Updated: 2021/02/10 16:24:26 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct	s_two{
 	t_state			state;
 	pthread_t		thread;
 	size_t			time_of_death;
+	size_t			time_activity_end;
 	int				eaten_meals;
 	struct s_two	*next;
 }				t_two;
