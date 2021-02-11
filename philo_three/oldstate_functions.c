@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   state_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 01:07:48 by amartin-         ###   ########.fr       */
+/*   Updated: 2020/12/31 14:55:24 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,10 @@
 
 static int		think(t_three *philo, int *index, sem_t **lock)
 {
-	size_t	activity_end;
-
 	print_activity(get_time() - philo->args->start_time, *index, THINK, lock);
-	if (philo->index % 2 && philo->args->philo_count != 1
-		&& !philo->eaten_meals)
-	{
-		activity_end = get_time() + philo->args->time_to_eat;
-		while (philo && get_time() < activity_end)
-			usleep(50);
-	}
+	if (philo->args->number_of_philosophers % 2 && (philo->eaten_meals
+		|| (philo->index % 2 && philo->args->number_of_philosophers != 1)))
+		usleep(1000 * philo->args->time_to_eat);
 	if (philo && philo->state)
 		philo->state = TAKING_FORK;
 	if (!philo)
@@ -33,11 +27,12 @@ static int		think(t_three *philo, int *index, sem_t **lock)
 
 static int		take_fork(t_three *philo, int *index, sem_t **lock)
 {
-	sem_wait(philo->args->fork_pairs);
-	if (philo->args->times_must_eat < -1)
+	sem_wait(philo->args->forks);
+	print_activity(get_time() - philo->args->start_time, *index, FORK, lock);
+	sem_wait(philo->args->forks);
+	print_activity(get_time() - philo->args->start_time, *index, FORK, lock);
+	if (!philo)
 		return (EXIT_FAILURE);
-	print_activity(get_time() - philo->args->start_time, *index, FORK, lock);
-	print_activity(get_time() - philo->args->start_time, *index, FORK, lock);
 	if (philo->state)
 		philo->state = EATING;
 	return (EXIT_SUCCESS);
@@ -45,16 +40,13 @@ static int		take_fork(t_three *philo, int *index, sem_t **lock)
 
 static int		eat(t_three *philo, int *index, sem_t **lock)
 {
-	size_t	activity_end;
-
-	print_activity(get_time() - philo->args->start_time, *index, EAT, lock);
-	activity_end = get_time() + philo->args->time_to_eat;
 	philo->time_of_death = get_time() + philo->args->time_to_die;
-	while (philo->args->times_must_eat >= -1 && get_time() < activity_end)
-		usleep(50);
-	sem_post(philo->args->fork_pairs);
-	if (philo->args->times_must_eat < -1)
+	print_activity(get_time() - philo->args->start_time, *index, EAT, lock);
+	usleep(1000 * philo->args->time_to_eat);
+	if (!philo)
 		return (EXIT_FAILURE);
+	sem_post(philo->args->forks);
+	sem_post(philo->args->forks);
 	philo->eaten_meals++;
 	if (philo->eaten_meals == philo->args->times_must_eat)
 		return (FULL);
@@ -65,13 +57,9 @@ static int		eat(t_three *philo, int *index, sem_t **lock)
 
 static int		dream(t_three *philo, int *index, sem_t **lock)
 {
-	size_t	activity_end;
-
 	print_activity(get_time() - philo->args->start_time, *index, SLEEP, lock);
-	activity_end = get_time() + philo->args->time_to_sleep;
-	while (philo->args->times_must_eat >= -1 && get_time() < activity_end)
-		usleep(50);
-	if (philo->args->times_must_eat < -1)
+	usleep(1000 * philo->args->time_to_sleep);
+	if (!philo)
 		return (EXIT_FAILURE);
 	if (philo->state)
 		philo->state = THINKING;
@@ -86,11 +74,8 @@ void			*being_a_philosopher(void *arg)
 
 	philo = (t_three *)arg;
 	lock = philo->args->lock;
-	philo->args->start_time = get_time();
-	philo->time_of_death = get_time() + philo->args->time_to_die;
-	philo->time_of_death = get_time() + philo->args->time_to_die;
 	while (philo && philo->args->times_must_eat >= -1 && philo->state
 		&& !life[philo->state - 1](philo, &philo->index, lock))
-		usleep(50);
+		;
 	return (NULL);
 }
