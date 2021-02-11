@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 00:07:49 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/11 01:13:06 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,3 @@ void		print_activity(size_t time, int index, char *activity, sem_t *lock)
 	if (!print_lock)
 		sem_post(lock);
 }
-
