@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 01:06:46 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/11 16:30:37 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static void	wait_till_the_end(pid_t *pids, t_args *args)
 
 	full_philosophers = 0;
 	i = 0;
+	sem_wait(args->start_wait);
+	args->start_time = get_time();
 	while (full_philosophers < args->philo_count)
 	{
 		waitpid(-1, &status, 0);
@@ -41,13 +43,25 @@ static void	wait_till_the_end(pid_t *pids, t_args *args)
 void		*check_health(void *arg)
 {
 	t_three	*philo;
-	size_t	time_of_death;
+	int		i;
 
 	philo = (t_three*)arg;
+	if (philo->index == philo->args->philo_count)
+	{
+		i = philo->args->philo_count + 1;
+		while (i--)
+			sem_post(philo->args->start_wait);
+		sem_close(philo->args->start_wait);
+		sem_unlink("/start");
+	}
+	else
+		sem_wait(philo->args->start_wait);
+	philo->args->start_time = get_time();
+	philo->time_of_death = get_time() + philo->args->time_to_die;
 	while (get_time() <= philo->time_of_death)
-		;
-	time_of_death = get_time() - philo->args->start_time;
-	print_activity(time_of_death, philo->index, DIE, philo->args->lock);
+		usleep(50);
+	print_activity(philo->time_of_death - philo->args->start_time,
+		philo->index, DIE, philo->args->lock);
 	philo->state = DEAD;
 	philo->args->lock = NULL;
 	philo = NULL;
@@ -61,7 +75,8 @@ static void	init_philosopher(t_three *philo, t_args *args, int index)
 	philo->eaten_meals = 0;
 	philo->index = index;
 	philo->state = THINKING;
-	philo->time_of_death = args->start_time + args->time_to_die;
+	philo->start_time = 0;
+	philo->time_of_death = 0;
 	pthread_create(&(philo->thread), NULL, &check_health, philo);
 	pthread_detach(philo->thread);
 	being_a_philosopher(philo);
@@ -84,8 +99,9 @@ static int	recruit_philosophers(t_args *args, pid_t *pids)
 	int		index;
 	t_three	philo;
 
+	sem_unlink("/start");
+	args->start_wait = sem_open("/start", O_CREAT, 0660, 0);
 	index = 1;
-	args->start_time = get_time();
 	while (index <= args->philo_count)
 	{
 		if ((pid = fork()) == -1)
@@ -101,12 +117,6 @@ static int	recruit_philosophers(t_args *args, pid_t *pids)
 	}
 	return (EXIT_SUCCESS);
 }
-
-/*
-** lock[0] aka "/forks" is used for the forks ;
-** lock[1] aka "/lock" is used to prevent 1. simultaneous uses of write by
-** different processes/philosophers or 2. any printing after a philosopher died.
-*/
 
 int			main(int argc, char **argv)
 {

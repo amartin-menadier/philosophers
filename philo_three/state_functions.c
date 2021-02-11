@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 01:07:48 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/11 16:23:26 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void			*being_a_philosopher(void *arg)
 	philo = (t_three *)arg;
 	lock = philo->args->lock;
 	philo->args->start_time = get_time();
-	philo->time_of_death = get_time() + philo->args->time_to_die;
 	philo->time_of_death = get_time() + philo->args->time_to_die;
 	while (philo && philo->args->times_must_eat >= -1 && philo->state
 		&& !life[philo->state - 1](philo, &philo->index, lock))

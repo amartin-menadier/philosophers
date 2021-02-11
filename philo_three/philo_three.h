@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 00:57:12 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/11 15:16:29 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct	s_args{
 	int			times_must_eat;
 	sem_t		*fork_pairs;
 	sem_t		**lock;
+	sem_t		*start_wait;
 	size_t		start_time;
 }				t_args;
 
