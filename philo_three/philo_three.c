@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 16:30:37 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/16 00:43:53 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	wait_till_the_end(pid_t *pids, t_args *args)
 	full_philosophers = 0;
 	i = 0;
 	sem_wait(args->start_wait);
-	args->start_time = get_time();
+//	args->start_time = get_time();
 	while (full_philosophers < args->philo_count)
 	{
 		waitpid(-1, &status, 0);
@@ -56,8 +56,10 @@ void		*check_health(void *arg)
 	}
 	else
 		sem_wait(philo->args->start_wait);
-	philo->args->start_time = get_time();
-	philo->time_of_death = get_time() + philo->args->time_to_die;
+		
+	usleep(500);
+//	philo->args->start_time = get_time();
+	philo->time_of_death = philo->args->start_time + philo->args->time_to_die;
 	while (get_time() <= philo->time_of_death)
 		usleep(50);
 	print_activity(philo->time_of_death - philo->args->start_time,
@@ -102,6 +104,7 @@ static int	recruit_philosophers(t_args *args, pid_t *pids)
 	sem_unlink("/start");
 	args->start_wait = sem_open("/start", O_CREAT, 0660, 0);
 	index = 1;
+	args->start_time = get_time();
 	while (index <= args->philo_count)
 	{
 		if ((pid = fork()) == -1)

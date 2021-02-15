@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/15 22:49:02 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/15 23:02:13 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int			main(int argc, char **argv)
 	if (parse_args(arg, argc, argv)
 		|| !(philo = malloc(sizeof(t_two))))
 	{
-		free (arg);
+		free(arg);
 		return (EXIT_FAILURE);
 	}
 	philo->next = NULL;

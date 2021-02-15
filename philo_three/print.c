@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2021/02/15 23:16:48 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/16 00:36:47 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ static int	len_of_timestamp_x(size_t time, int index)
 void		print_activity(size_t time, int index, char *activity, sem_t **lock)
 {
 	char	msg[30];
-	int		len;
 	int		i;
+	int		len;
 
 	if (lock && *lock)
 		sem_wait(*lock);
@@ -70,8 +70,7 @@ void		print_activity(size_t time, int index, char *activity, sem_t **lock)
 	i = len + 1;
 	while (len >= 0 && index && (msg[len--] = index % 10 + '0'))
 		index /= 10;
-	msg[len--] = ' ';
-	msg[len] = 0 + '0';
+	msg[--len] = 0 + '0';
 	while (len >= 0 && (time) && (msg[len--] = (time) % 10 + '0'))
 		time /= 10;
 	while (activity && *activity && i < 28)

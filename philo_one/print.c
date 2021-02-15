@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 19:22:20 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 00:36:17 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/15 23:17:39 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,24 @@ void		print_activity(size_t time, int index, char *activity,
 {
 	char	msg[30];
 	int		len;
-	int		activity_index;
+	int		i;
 	int		print_lock;
 
 	if ((print_lock = activity[1]) != 'd')
 		print_lock = 0;
 	memset(msg, ' ', sizeof(msg));
-	msg[29] = '\n';
+	msg[28] = '\n';
+	msg[29] = '\0';
 	len = len_of_timestamp_x(time, index);
-	activity_index = len + 1;
+	i = len + 1;
 	while (len >= 0 && index && (msg[len--] = index % 10 + '0'))
 		index /= 10;
 	msg[len--] = ' ';
 	msg[len] = 0 + '0';
 	while (len >= 0 && (time) && (msg[len--] = (time) % 10 + '0'))
 		time /= 10;
-	while (activity && *activity && activity_index < 29)
-		msg[activity_index++] = *activity++;
+	while (activity && *activity && i < 28)
+		msg[i++] = *activity++;
 	pthread_mutex_lock(lock);
 	write(1, msg, 30);
 	if (!print_lock)

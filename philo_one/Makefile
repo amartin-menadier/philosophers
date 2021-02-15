@@ -6,7 +6,7 @@
 #    By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/28 09:41:35 by celeloup          #+#    #+#              #
-#    Updated: 2021/02/11 00:24:13 by amartin-         ###   ########.fr        #
+#    Updated: 2021/02/15 23:50:51 by amartin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ _CUT		= "\033[k"
 NAME		= philo_one
 
 CC			= clang
-CFLAGS		= -lpthread -Wall -Wextra -Werror -g3 -fsanitize=address,undefined 
+CFLAGS		= -lpthread -Wall -Wextra -Werror #-g3 -fsanitize=address,undefined 
 DEPS		= philo_one.h
 
 SRCS		= philo_one.c state_functions.c free.c parsing.c print.c
