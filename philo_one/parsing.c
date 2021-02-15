@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:53:41 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 16:04:13 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/15 22:50:08 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ static int	philo_alone(int time_to_die)
 static int	arg_error(int my_errno)
 {
 	if (my_errno == ARG_COUNT)
-		write(2, "\nError: Invalid number of arguments", 36);
+		write(2, "Error: Invalid number of arguments\n", 36);
 	else if (my_errno == ARG_FORMAT)
-		write(2, "\nError: Invalid format of an argument", 38);
+		write(2, "Error: Invalid format of an argument\n", 38);
 	return (EXIT_FAILURE);
 }
 

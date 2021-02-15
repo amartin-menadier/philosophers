@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:05:35 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 01:13:06 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/15 22:52:57 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void		print_activity(size_t time, int index, char *activity, sem_t *lock)
 	if ((print_lock = activity[1]) != 'd')
 		print_lock = 0;
 	memset(msg, ' ', sizeof(msg));
-	msg[29] = '\n';
+	msg[28] = '\n';
+	msg[29] = '\0';
 	len = len_of_timestamp_x(time, index);
 	activity_index = len + 1;
 	while (len >= 0 && index && (msg[len--] = index % 10 + '0'))

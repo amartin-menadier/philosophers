@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 23:03:57 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/15 22:49:02 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	free_philosophers(t_args *args, t_two **philo, int ret)
 {
-	if ((*philo)->next)
+	if (*philo && (*philo)->next)
 		free_philosophers(args, &(*philo)->next, ret);
 	pthread_join((*philo)->thread, NULL);
 	(*philo)->thread = 0;
@@ -26,7 +26,8 @@ static int	free_philosophers(t_args *args, t_two **philo, int ret)
 		sem_unlink("/forks");
 		free(args);
 	}
-	free(*philo);
+	if (*philo)
+		free(*philo);
 	*philo = NULL;
 	return (ret);
 }
@@ -92,10 +93,14 @@ int			main(int argc, char **argv)
 
 	arg = NULL;
 	philo = NULL;
-	if (!(arg = malloc(sizeof(t_args)))
-		|| parse_args(arg, argc, argv)
+	if (!(arg = malloc(sizeof(t_args))))
+		return (EXIT_FAILURE);
+	if (parse_args(arg, argc, argv)
 		|| !(philo = malloc(sizeof(t_two))))
-		return (free_philosophers(arg, &philo, EXIT_FAILURE));
+	{
+		free (arg);
+		return (EXIT_FAILURE);
+	}
 	philo->next = NULL;
 	philo->index = 1;
 	sem_unlink("/forks");
