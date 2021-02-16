@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2021/02/10 15:56:09 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/16 19:34:34 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct		s_one{
 	struct s_one		*next;
 }					t_one;
 
-typedef int			(*t_function)(t_one *philo, int *i, pthread_mutex_t *lock);
+typedef int			(*t_function)(t_one *philo, int i, pthread_mutex_t *lock);
 int					parse_args(t_args *arg, int argc, char **argv);
 size_t				get_time(void);
 void				print_activity(size_t time, int index, char *activity,
