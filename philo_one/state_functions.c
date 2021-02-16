@@ -6,15 +6,16 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/16 19:42:05 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/16 20:10:37 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo_one.h"
 
-static int		think(t_one *philo, int index, pthread_mutex_t *lock)
+static int		think(t_one *philo, int index, pthread_mutex_t *lok)
 {
-	print_activity(get_time() - philo->args->start_time, index, THINK, lock);
+	if (philo->args->times_must_eat != -2)
+		print_activity(get_time() - philo->args->start_time, index, THINK, lok);
 	if (philo->index % 2 && philo->args->number_of_philosophers != 1
 		&& !philo->eaten_meals)
 	{
@@ -48,7 +49,8 @@ static int		take_fork(t_one *philo, int index, pthread_mutex_t *lock)
 
 static int		eat(t_one *philo, int index, pthread_mutex_t *lock)
 {
-	print_activity(get_time() - philo->args->start_time, index, EAT, lock);
+	if (philo->args->times_must_eat != -2)
+		print_activity(get_time() - philo->args->start_time, index, EAT, lock);
 	philo->time_of_death = get_time() + philo->args->time_to_die;
 	philo->time_activity_end = get_time() + philo->args->time_to_eat;
 	while (get_time() < philo->time_activity_end)
@@ -65,9 +67,10 @@ static int		eat(t_one *philo, int index, pthread_mutex_t *lock)
 	return (EXIT_SUCCESS);
 }
 
-static int		dream(t_one *philo, int index, pthread_mutex_t *lock)
+static int		dream(t_one *philo, int index, pthread_mutex_t *lok)
 {
-	print_activity(get_time() - philo->args->start_time, index, SLEEP, lock);
+	if (philo->args->times_must_eat != -2)
+		print_activity(get_time() - philo->args->start_time, index, SLEEP, lok);
 	philo->time_activity_end = get_time() + philo->args->time_to_sleep;
 	while (get_time() < philo->time_activity_end)
 		usleep(50);

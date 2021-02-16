@@ -5,26 +5,10 @@
 #                                                     +:+ +:+         +:+      #
 #    By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/05/28 09:41:35 by celeloup          #+#    #+#              #
-#    Updated: 2021/02/15 23:50:45 by amartin-         ###   ########.fr        #
+#    Created: 2021/02/16 21:07:12 by amartin-          #+#    #+#              #
+#    Updated: 2021/02/16 21:07:46 by amartin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-# COLORS
-_BLACK		= "\033[30m"
-_RED		= "\033[31m"
-_GREEN		= "\033[32m"
-_YELLOW		= "\033[33m"
-_BLUE		= "\033[34m"
-_VIOLET		= "\033[35m"
-_CYAN		= "\033[36m"
-_WHITE		= "\033[37m"
-_END		= "\033[0m"
-_CLEAR		= "\033[2K"
-_HIDE_CURS	= "\033[?25l"
-_SHOW_CURS	= "\033[?25h"
-_UP			= "\033[A"
-_CUT		= "\033[k"
 
 #PHILO_THREE
 NAME		= philo_three

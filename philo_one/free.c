@@ -6,37 +6,67 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:17:07 by user42            #+#    #+#             */
-/*   Updated: 2021/02/16 19:42:29 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/16 20:52:10 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo_one.h"
 
-int		free_philosophers(t_args **args, t_one *philo, int ret)
+void	destroy_forks(t_one *philo)
 {
-	if (philo)
-		free_philosophers(args, philo->next, ret);
-	if (philo && philo->thread)
-	{
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_join(philo->thread, NULL);
-		pthread_detach(philo->thread);
-		philo->thread = 0;
-	}
-	if (philo && philo->left_fork)
+	while (philo)
 	{
 		pthread_mutex_destroy(philo->left_fork);
 		free(philo->left_fork);
+		philo = philo->next;
 	}
-	if (philo && philo->index == 1)
+}
+
+void	unlock_forks(t_one *philo)
+{
+	while (philo)
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		philo = philo->next;
+	}
+}
+
+void	free_args(t_args **args)
+{
+	if ((*args)->print_lock)
 	{
 		pthread_mutex_destroy((*args)->print_lock);
 		free((*args)->print_lock);
-		free(*args);
 	}
-	if (philo)
+	free(*args);
+	*args = NULL;
+}
+
+int		free_philosophers(t_args **args, t_one *philo, int ret)
+{
+	t_one	*tmp;
+
+	tmp = philo;
+	unlock_forks(philo);
+	usleep((*args)->time_to_die * 1000);
+	philo = tmp;
+	destroy_forks(philo);
+	philo = tmp;
+	while (philo && philo->thread)
+	{
+		pthread_join(philo->thread, NULL);
+		pthread_detach(philo->thread);
+		philo->thread = 0;
+		philo = philo->next;
+	}
+	if (args && *args)
+		free_args(args);
+	philo = tmp;
+	while (philo)
+	{
+		tmp = philo->next;
 		free(philo);
-	philo = NULL;
+		philo = tmp;
+	}
 	return (ret);
 }

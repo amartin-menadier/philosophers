@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:53:41 by user42            #+#    #+#             */
-/*   Updated: 2021/02/15 22:49:39 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/16 21:41:39 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,9 @@ int			parse_args(t_args *arg, int argc, char **argv)
 		return (arg_error(ARG_FORMAT));
 	if (arg->philo_count == 1)
 		return (philo_alone(arg->time_to_die));
+	sem_unlink("/forks");
+	sem_unlink("/lock");
+	arg->fork_pairs = sem_open("/forks", O_CREAT, 0660, arg->philo_count / 2);
+	arg->lock = sem_open("/lock", O_CREAT, 0660, 1);
 	return (EXIT_SUCCESS);
 }
