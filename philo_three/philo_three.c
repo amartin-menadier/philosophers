@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/17 19:42:17 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/17 20:01:24 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ void		check_health(t_three *philo)
 		sem_wait(philo->args->start_wait);
 	usleep(500);
 */	philo->time_of_death = philo->args->start_time + philo->args->time_to_die;
-	while (get_time() <= philo->time_of_death
+	while (get_time() < philo->time_of_death
 		&& philo->eaten_meals != philo->args->time_to_eat
 		&& philo->args->times_must_eat >= -1)
 		usleep(50);
-	if (philo->eaten_meals != philo->args->time_to_eat)
+	if (get_time() >= philo->time_of_death && philo->args->times_must_eat >= -1)
 	{
 		philo->state = DEAD;
 		philo->args->times_must_eat = -2;

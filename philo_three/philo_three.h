@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2021/02/17 18:57:16 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/17 19:55:33 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define SLEEP	" is sleeping"
 # define THINK	" is thinking"
 # define DIE	" died"
-# define YUMMY	" Everybody was fed! :)"
+# define YUMMY	" is full! :)"
 # define FULL	5
 
 # define ARG_COUNT		1
