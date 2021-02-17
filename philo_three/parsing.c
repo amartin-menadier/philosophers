@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:53:41 by user42            #+#    #+#             */
-/*   Updated: 2021/02/16 21:30:08 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:08:47 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ static int	philo_alone(int time_to_die)
 	int		len;
 	char	*time_of_death;
 
-	if (!(time_of_death = basic_itoa(time_to_die)))
-		return (EXIT_FAILURE);
 	write(1, "0 1 is thinking\n", 17);
 	write(1, "0 1 has taken a fork\n", 22);
 	usleep(time_to_die * 1000);
+	if (!(time_of_death = basic_itoa(time_to_die)))
+		return (EXIT_FAILURE);
 	len = 0;
 	while (time_of_death[len])
 		len++;
@@ -96,7 +96,7 @@ int			parse_args(t_args *arg, int argc, char **argv)
 	arg->start_time = 0;
 	arg->fork_pairs = NULL;
 	arg->lock = NULL;
-	arg->start_wait = NULL;
+//	arg->start_wait = NULL;
 	if (!argv[5])
 		arg->times_must_eat = -1;
 	if (argc < 5 || argc > 6)

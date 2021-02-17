@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 12:14:57 by user42            #+#    #+#             */
-/*   Updated: 2021/02/16 00:53:00 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:55:32 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static int		think(t_three *philo, int *index, sem_t **lock)
 {
 	size_t	activity_end;
 
+	if (philo->args->times_must_eat < -1)
+		return (EXIT_FAILURE);
 	print_activity(get_time() - philo->args->start_time, *index, THINK, lock);
 	if (philo->index % 2 && philo->args->philo_count != 1
 		&& !philo->eaten_meals)
@@ -33,6 +35,8 @@ static int		think(t_three *philo, int *index, sem_t **lock)
 
 static int		take_fork(t_three *philo, int *index, sem_t **lock)
 {
+	if (philo->args->times_must_eat < -1)
+		return (EXIT_FAILURE);
 	sem_wait(philo->args->fork_pairs);
 	if (philo->args->times_must_eat < -1)
 		return (EXIT_FAILURE);
@@ -82,12 +86,13 @@ void			*being_a_philosopher(void *arg)
 {
 	t_three				*philo;
 	static t_function	life[4] = {think, take_fork, eat, dream};
-	sem_t				**lock;
+	sem_t				*lock;
 
 	philo = (t_three *)arg;
 	lock = philo->args->lock;
 	while (philo && philo->args->times_must_eat >= -1 && philo->state
-		&& !life[philo->state - 1](philo, &philo->index, lock))
+		&& philo->args->times_must_eat >= -1
+		&& !life[philo->state - 1](philo, &philo->index, &lock))
 		usleep(50);
 	return (NULL);
 }

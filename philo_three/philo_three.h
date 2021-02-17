@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:03:00 by user42            #+#    #+#             */
-/*   Updated: 2021/02/11 15:16:29 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:57:16 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ typedef struct	s_args{
 	int			time_to_sleep;
 	int			times_must_eat;
 	sem_t		*fork_pairs;
-	sem_t		**lock;
-	sem_t		*start_wait;
+	sem_t		*lock;
+//	sem_t		*start_wait;
 	size_t		start_time;
 }				t_args;
 
@@ -71,5 +71,6 @@ int				parse_args(t_args *arg, int argc, char **argv);
 size_t			get_time(void);
 void			print_activity(size_t time, int i, char *act, sem_t **lock);
 void			*being_a_philosopher(void *arg);
+int				free_philosophers(t_args *args, pid_t *pid, int ret);
 
 #endif

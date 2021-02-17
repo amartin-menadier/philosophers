@@ -6,7 +6,7 @@
 #    By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/16 21:07:12 by amartin-          #+#    #+#              #
-#    Updated: 2021/02/16 21:07:46 by amartin-         ###   ########.fr        #
+#    Updated: 2021/02/17 18:22:00 by amartin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CC			= clang
 CFLAGS		= -lpthread -Wall -Wextra -Werror #-g3 -fsanitize=address,undefined 
 DEPS		= philo_three.h
 
-SRCS		= philo_three.c state_functions.c parsing.c print.c
+SRCS		= philo_three.c state_functions.c parsing.c print.c free.c
 OBJS		= $(SRCS:.c=.o)
 
 #ARGS
