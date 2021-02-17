@@ -6,7 +6,7 @@
 /*   By: amartin- <amartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 15:04:16 by user42            #+#    #+#             */
-/*   Updated: 2021/02/17 20:01:24 by amartin-         ###   ########.fr       */
+/*   Updated: 2021/02/17 20:04:26 by amartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	wait_till_the_end(pid_t *pids, t_args *args)
 		waitpid(-1, &status, 0);
 		if ((status = WEXITSTATUS(status)) != 0)
 		{
-			args->times_must_eat = -2;
+//			args->times_must_eat = -2;
 			usleep(args->time_to_die * 1000);
 /*			while (i < args->philo_count)
 			{
@@ -66,7 +66,9 @@ void		check_health(t_three *philo)
 		&& philo->eaten_meals != philo->args->time_to_eat
 		&& philo->args->times_must_eat >= -1)
 		usleep(50);
-	if (get_time() >= philo->time_of_death && philo->args->times_must_eat >= -1)
+	if (philo->eaten_meals != philo->args->times_must_eat
+		&& philo->args->times_must_eat >= -1
+		&& philo->args->lock)
 	{
 		philo->state = DEAD;
 		philo->args->times_must_eat = -2;
